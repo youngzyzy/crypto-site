@@ -159,7 +159,11 @@ function displayCoinDetails(coinData) {
     <p>#${coinData.market_cap_rank}</p>
   </div>
   <div class="card-info-price">
-    <p>$${coinData.market_data.current_price.usd.toLocaleString()}</p>
+    <p>$${
+      Math.abs(coinData.market_data.current_price.usd) >= 0.1
+        ? coinData.market_data.current_price.usd.toLocaleString()
+        : coinData.market_data.current_price.usd.toExponential(2)
+    }</p>
     <p>${coinData.market_data.market_cap_change_percentage_24h.toFixed(2)}%</p>
   </div>
 </div>
@@ -186,7 +190,11 @@ function displayCoinDetails(coinData) {
   </div>
   <div class="card-info-section">
     <p>Max Supply</p>
-    <p>${coinData.market_data.max_supply.toLocaleString()}</p>
+    <p>${
+      coinData.market_data.max_supply === null
+        ? "N.A"
+        : coinData.market_data.max_supply.toLocaleString()
+    }</p>
   </div>
 </div>`;
   cardInfoContainer.appendChild(div);

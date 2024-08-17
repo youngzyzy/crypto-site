@@ -133,6 +133,10 @@ body {
   justify-content: center;
   gap: 1rem;
 }
+
+.nav.coin-details {
+  margin-bottom: 4rem;
+}
 /* heading */
 .heading {
   padding-top: 4rem;
@@ -252,6 +256,7 @@ body {
   box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.6);
   max-width: 400px;
   margin: 0 auto;
+  margin-top: 4rem;
 }
 .historical-price-section {
   display: flex;
@@ -288,6 +293,7 @@ body {
   font-size: 0.8rem;
   opacity: 0.8;
 }
+
 @media (max-width: 900px) {
   .nav__mobile-menu {
     display: block;
