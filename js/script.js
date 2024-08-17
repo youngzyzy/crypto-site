@@ -2,7 +2,7 @@ const global = {
   currentPage: window.location.pathname,
   search: {
     page: 1,
-    totalPages: 5,
+    totalPages: 8,
   },
 };
 const options = {
@@ -308,17 +308,12 @@ function formatReadableDate(isoDate) {
 }
 
 async function onExchangesPage() {
-  const pageNumber = window.location.search.split("=")[1];
-  if (pageNumber < 6) {
-    try {
-      const pageData = await getPageData(pageNumber);
-      displayPageData(pageData);
-    } catch (error) {
-      console.log(error);
-      return;
-    }
-  } else {
-    alert("Invalid page number");
+  try {
+    const pageData = await getPageData(global.search.page);
+    displayPageData(pageData);
+  } catch (error) {
+    console.log(error);
+    return;
   }
 }
 
@@ -333,6 +328,13 @@ async function getPageData(pageNumber) {
 
 function displayPageData(pageData) {
   const cardContainer = document.querySelector(".card__container");
+  const paginationDiv = document.querySelector(".pagination");
+  cardContainer.innerHTML = "";
+
+  // paginationDiv.innerHTML = "";
+
+  // document.querySelector(".pagination").innerHTML = ``;
+
   pageData.forEach((page) => {
     const div = document.createElement("div");
     div.classList.add("card");
@@ -353,6 +355,44 @@ function displayPageData(pageData) {
   </div>`;
     cardContainer.appendChild(div);
   });
+
+  // const pageNumberDiv = document.querySelector(".pageNumber");
+  // pageNumberDiv.innerHTML = `<p>Page ${global.search.page} of ${global.search.totalPages}</p>`;
+  displayPagination();
+}
+
+function displayPagination() {
+  const paginationDiv = document.querySelector(".pagination__buttons");
+  paginationDiv.innerHTML = `          <button class="pagination__buttons-prev">Prev</button>
+<button class="pagination__buttons-next">Next</button>`;
+
+  const pageNumberDiv = document.querySelector(".pageNumber");
+
+  pageNumberDiv.innerHTML = `<p>Page ${global.search.page} of ${global.search.totalPages}</p>`;
+
+  // Disable prev button if on first page
+  if (global.search.page === 1) {
+    document.querySelector(".pagination__buttons-prev").disabled = true;
+  }
+  if (global.search.page === global.search.totalPages) {
+    document.querySelector(".pagination__buttons-next").disabled = true;
+  }
+  //next page
+  document
+    .querySelector(".pagination__buttons-next")
+    .addEventListener("click", async () => {
+      global.search.page++;
+      const pageData = await getPageData(global.search.page);
+      displayPageData(pageData);
+    });
+  // Prev page
+  document
+    .querySelector(".pagination__buttons-prev")
+    .addEventListener("click", async () => {
+      global.search.page--;
+      const pageData = await getPageData(global.search.page);
+      displayPageData(pageData);
+    });
 }
 
 function init() {
