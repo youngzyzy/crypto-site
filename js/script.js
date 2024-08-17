@@ -119,69 +119,6 @@ function displaySearchInfo(searchData) {
   });
 }
 
-// async function createCardInfo(coinsIDArray) {
-//   for (const coin of coinsIDArray) {
-//     try {
-//       const coinDetails = await getCoinDetails(coin);
-//       displayCoinDetails(coinDetails);
-//     } catch (error) {
-//       console.error(`Error fetching details for ${coin}:`, error);
-//     }
-//   }
-// }
-
-// async function getCoinDetails(coinID) {
-//   const coinDetailsUrl = `https://api.coingecko.com/api/v3/coins/${coinID}`;
-//   const response = await fetch(coinDetailsUrl, options);
-//   if (!response.ok) {
-//     throw new Error("Error on response");
-//   }
-//   return await response.json();
-// }
-
-// function displaySearchInfo(coinDetails) {
-
-// }
-
-// function displaySearchData(coinID) {
-
-//   coinsIDArray.forEach((coin) => {
-//     const div = document.createElement("div");
-//     div.classList.add("card");
-//     div.innerHTML = `    <div class="name">
-//     <img
-//       src="${coin.item.small}"
-//       alt=""
-//     />
-//     <h2>${coin.item.name}</h2>
-//   </div>
-//   <p class="coin-price">Price: $${coin.item.data.price.toFixed(2)}</p>
-//   <p class="priceChange24">24h: ${coin.item.data.price_change_percentage_24h.usd.toFixed(
-//     2
-//   )}%</p>
-//   <p class="volume24Hours">24h Volume: ${coin.item.data.total_volume}</p>
-//   <p class="marketCap">Market Cap: ${coin.item.data.market_cap}</p>`;
-//     cardContainer.appendChild(div);
-
-//     // change color of priceChange24 if + and -
-//     const priceChangePercent24 = div.querySelector(".priceChange24");
-
-//     colorChange(
-//       priceChangePercent24,
-//       coin.item.data.price_change_percentage_24h.usd
-//     );
-//   });
-// }
-
-// function getCoinIDs(searchData) {
-//   const coinsSearchData = searchData.coins;
-//   const coinsIDArray = [];
-//   coinsSearchData.forEach((coin) => {
-//     coinsIDArray.push(coin.id);
-//   });
-//   return coinsIDArray;
-// }
-
 async function getSearchData(coinToSearch) {
   const apiUrlSearch = `https://api.coingecko.com/api/v3/search?query=${coinToSearch}`;
   const response = await fetch(apiUrlSearch, options); // Added 'await' here
@@ -189,6 +126,129 @@ async function getSearchData(coinToSearch) {
     throw new Error("Error on response");
   }
   return await response.json();
+}
+async function onCoinDetailsPage() {
+  const coinToDisplay = window.location.search.split("=")[1];
+  console.log(coinToDisplay);
+  if (coinToDisplay !== "") {
+    try {
+      const coinData = await getCoinData(coinToDisplay);
+
+      displayCoinDetails(coinData);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  } else {
+    alert("No Coin to Display");
+  }
+}
+
+function displayCoinDetails(coinData) {
+  console.log(coinData);
+  const cardInfoContainer = document.querySelector(".card-info__container");
+  const div = document.createElement("div");
+  div.classList.add("card-info");
+  div.innerHTML = `   <img
+  src="${coinData.image.large}"
+  alt="${coinData.name}"
+/>
+<div class="card-info-main-container">
+  <div class="card-info-title">
+    <h2>${coinData.name}</h2>
+    <p>#${coinData.market_cap_rank}</p>
+  </div>
+  <div class="card-info-price">
+    <p>$${coinData.market_data.current_price.usd.toLocaleString()}</p>
+    <p>${coinData.market_data.market_cap_change_percentage_24h.toFixed(2)}%</p>
+  </div>
+</div>
+<div class="card-info-section-container">
+  <div class="card-info-section">
+    <p>Market Cap</p>
+    <p>$${coinData.market_data.market_cap.usd.toLocaleString()}</p>
+  </div>
+  <div class="card-info-section">
+    <p>Fully Diluted Valuation</p>
+    <p>$${coinData.market_data.fully_diluted_valuation.usd.toLocaleString()}</p>
+  </div>
+  <div class="card-info-section">
+    <p>Total Trading Volume</p>
+    <p>$${coinData.market_data.total_volume.usd.toLocaleString()}</p>
+  </div>
+  <div class="card-info-section">
+    <p>Circulating Supply</p>
+    <p>${coinData.market_data.circulating_supply.toLocaleString()}</p>
+  </div>
+  <div class="card-info-section">
+    <p>Total Supply</p>
+    <p>${coinData.market_data.total_supply.toLocaleString()}</p>
+  </div>
+  <div class="card-info-section">
+    <p>Max Supply</p>
+    <p>${coinData.market_data.max_supply.toLocaleString()}</p>
+  </div>
+</div>`;
+  cardInfoContainer.appendChild(div);
+  const historicalPriceContainer = document.querySelector(
+    ".historical-price__container"
+  );
+  const divTwo = document.createElement("div");
+  divTwo.classList.add("historical-price");
+  divTwo.innerHTML = `     <h2 class="historical-price-heading">Historical Price</h2>
+  <div class="historical-price-section-container">
+    <div class="historical-price-section">
+      <p>24h % Change</p>
+      <p>${coinData.market_data.market_cap_change_percentage_24h.toFixed(
+        2
+      )}%</p>
+    </div>
+    <div class="historical-price-section">
+      <p>7d % Change</p>
+      <p>${coinData.market_data.price_change_percentage_7d.toFixed(2)}%</p>
+    </div>
+    <div class="historical-price-section">
+      <p>All Time High</p>
+      <div class="historical-price-section-right">
+        <div class="historical-price-section-top">
+          <p>$${coinData.market_data.ath.usd.toLocaleString()}</p>
+          <p>${coinData.market_data.ath_change_percentage.usd.toFixed(2)}%</p>
+        </div>
+        <div class="historical-price-section-bottom">
+          <p>${formatReadableDate(coinData.market_data.ath_date.usd)}</p>
+        </div>
+      </div>
+    </div>
+    <div class="historical-price-section">
+      <p>All Time Low</p>
+      <div class="historical-price-section-right">
+        <div class="historical-price-section-top">
+          <p>$${coinData.market_data.atl.usd.toLocaleString()}</p>
+          <p>${coinData.market_data.atl_change_percentage.usd.toFixed(2)}%</p>
+        </div>
+        <div class="historical-price-section-bottom">
+          <p>${formatReadableDate(coinData.market_data.atl_date.usd)}</p>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  historicalPriceContainer.appendChild(divTwo);
+}
+async function getCoinData(coinToDisplay) {
+  const apiURL = `https://api.coingecko.com/api/v3/coins/${coinToDisplay}`;
+  const response = await fetch(apiURL, options);
+  if (!response.ok) {
+    throw new Error("Error on response");
+  }
+  return await response.json();
+}
+function formatReadableDate(isoDate) {
+  const date = new Date(isoDate);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
 function init() {
@@ -199,9 +259,12 @@ function init() {
       onIndexPage();
       break;
     case "/search.html":
+      indexEventListeners();
       onSearchPage();
       console.log("on search page");
       break;
+    case "/coin-details.html":
+      onCoinDetailsPage();
   }
 }
 
