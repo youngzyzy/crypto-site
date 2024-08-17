@@ -1,5 +1,9 @@
 const global = {
   currentPage: window.location.pathname,
+  search: {
+    page: 1,
+    totalPages: 5,
+  },
 };
 const options = {
   method: "GET",
@@ -28,7 +32,10 @@ async function onIndexPage() {
 function displayTrendingData(trendingData) {
   const cardContainer = document.querySelector(".card__container");
   const coinData = trendingData.coins;
+
   coinData.forEach((coin) => {
+    const a = document.createElement("a");
+    a.setAttribute("href", `./coin-details.html?id=${coin.item.id}`);
     const div = document.createElement("div");
     div.classList.add("card");
     div.innerHTML = `    <div class="name">
@@ -38,13 +45,18 @@ function displayTrendingData(trendingData) {
     />
     <h2>${coin.item.name}</h2>
   </div>
-  <p class="coin-price">Price: $${coin.item.data.price.toFixed(2)}</p>
+  <p class="coin-price">Price: $${
+    Math.abs(coin.item.data.price) >= 0.01
+      ? coin.item.data.price.toLocaleString()
+      : coin.item.data.price.toExponential(2)
+  }</p>
   <p class="priceChange24">24h: ${coin.item.data.price_change_percentage_24h.usd.toFixed(
     2
   )}%</p>
   <p class="volume24Hours">24h Volume: ${coin.item.data.total_volume}</p>
   <p class="marketCap">Market Cap: ${coin.item.data.market_cap}</p>`;
-    cardContainer.appendChild(div);
+    a.appendChild(div);
+    cardContainer.appendChild(a);
 
     // change color of priceChange24 if + and -
     const priceChangePercent24 = div.querySelector(".priceChange24");
@@ -77,12 +89,6 @@ async function onSearchPage() {
     try {
       const searchData = await getSearchData(coinToSearch);
 
-      console.log(searchData);
-      // //if no coins found, return
-      // if (coinsIDArray.length === 0) {
-      //   alert("no coins found D:");
-      //   return;
-      // }
       displaySearchInfo(searchData);
     } catch (error) {
       console.log(error);
@@ -121,7 +127,7 @@ function displaySearchInfo(searchData) {
 
 async function getSearchData(coinToSearch) {
   const apiUrlSearch = `https://api.coingecko.com/api/v3/search?query=${coinToSearch}`;
-  const response = await fetch(apiUrlSearch, options); // Added 'await' here
+  const response = await fetch(apiUrlSearch, options);
   if (!response.ok) {
     throw new Error("Error on response");
   }
@@ -129,7 +135,7 @@ async function getSearchData(coinToSearch) {
 }
 async function onCoinDetailsPage() {
   const coinToDisplay = window.location.search.split("=")[1];
-  console.log(coinToDisplay);
+
   if (coinToDisplay !== "") {
     try {
       const coinData = await getCoinData(coinToDisplay);
@@ -145,7 +151,6 @@ async function onCoinDetailsPage() {
 }
 
 function displayCoinDetails(coinData) {
-  console.log(coinData);
   const cardInfoContainer = document.querySelector(".card-info__container");
   const div = document.createElement("div");
   div.classList.add("card-info");
@@ -164,7 +169,9 @@ function displayCoinDetails(coinData) {
         ? coinData.market_data.current_price.usd.toLocaleString()
         : coinData.market_data.current_price.usd.toExponential(2)
     }</p>
-    <p>${coinData.market_data.market_cap_change_percentage_24h.toFixed(2)}%</p>
+    <p class="card-info-percent-24">${coinData.market_data.market_cap_change_percentage_24h.toFixed(
+      2
+    )}%</p>
   </div>
 </div>
 <div class="card-info-section-container">
@@ -207,20 +214,24 @@ function displayCoinDetails(coinData) {
   <div class="historical-price-section-container">
     <div class="historical-price-section">
       <p>24h % Change</p>
-      <p>${coinData.market_data.market_cap_change_percentage_24h.toFixed(
+      <p class="historical-price-change-24">${coinData.market_data.market_cap_change_percentage_24h.toFixed(
         2
       )}%</p>
     </div>
     <div class="historical-price-section">
       <p>7d % Change</p>
-      <p>${coinData.market_data.price_change_percentage_7d.toFixed(2)}%</p>
+      <p class="historical-price-change-7">${coinData.market_data.price_change_percentage_7d.toFixed(
+        2
+      )}%</p>
     </div>
     <div class="historical-price-section">
       <p>All Time High</p>
       <div class="historical-price-section-right">
         <div class="historical-price-section-top">
           <p>$${coinData.market_data.ath.usd.toLocaleString()}</p>
-          <p>${coinData.market_data.ath_change_percentage.usd.toFixed(2)}%</p>
+          <p class="historical-price-ath-percent-change">${coinData.market_data.ath_change_percentage.usd.toFixed(
+            2
+          )}%</p>
         </div>
         <div class="historical-price-section-bottom">
           <p>${formatReadableDate(coinData.market_data.ath_date.usd)}</p>
@@ -232,7 +243,9 @@ function displayCoinDetails(coinData) {
       <div class="historical-price-section-right">
         <div class="historical-price-section-top">
           <p>$${coinData.market_data.atl.usd.toLocaleString()}</p>
-          <p>${coinData.market_data.atl_change_percentage.usd.toFixed(2)}%</p>
+          <p class="historical-price-atl-percent-change">${coinData.market_data.atl_change_percentage.usd.toFixed(
+            2
+          )}%</p>
         </div>
         <div class="historical-price-section-bottom">
           <p>${formatReadableDate(coinData.market_data.atl_date.usd)}</p>
@@ -241,6 +254,41 @@ function displayCoinDetails(coinData) {
     </div>
   </div>`;
   historicalPriceContainer.appendChild(divTwo);
+
+  // change color of all elements w percent if greater than 0 (green), and less than 0 (red)
+  const cardInfoPercent24 = document.querySelector(".card-info-percent-24");
+  const historicalPricePercent24 = document.querySelector(
+    ".historical-price-change-24"
+  );
+  const historicalPricePercent7 = document.querySelector(
+    ".historical-price-change-7"
+  );
+  const historicalPriceAthPercent = document.querySelector(
+    ".historical-price-ath-percent-change"
+  );
+  const historicalPriceAtlPercent = document.querySelector(
+    ".historical-price-atl-percent-change"
+  );
+  colorChange(
+    cardInfoPercent24,
+    coinData.market_data.market_cap_change_percentage_24h
+  );
+  colorChange(
+    historicalPricePercent24,
+    coinData.market_data.market_cap_change_percentage_24h
+  );
+  colorChange(
+    historicalPricePercent7,
+    coinData.market_data.price_change_percentage_7d
+  );
+  colorChange(
+    historicalPriceAthPercent,
+    coinData.market_data.ath_change_percentage.usd
+  );
+  colorChange(
+    historicalPriceAtlPercent,
+    coinData.market_data.atl_change_percentage.usd
+  );
 }
 async function getCoinData(coinToDisplay) {
   const apiURL = `https://api.coingecko.com/api/v3/coins/${coinToDisplay}`;
@@ -259,6 +307,54 @@ function formatReadableDate(isoDate) {
   });
 }
 
+async function onExchangesPage() {
+  const pageNumber = window.location.search.split("=")[1];
+  if (pageNumber < 6) {
+    try {
+      const pageData = await getPageData(pageNumber);
+      displayPageData(pageData);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  } else {
+    alert("Invalid page number");
+  }
+}
+
+async function getPageData(pageNumber) {
+  const apiUrlSearch = `https://api.coingecko.com/api/v3/exchanges?per_page=25&page=${pageNumber}}`;
+  const response = await fetch(apiUrlSearch, options);
+  if (!response.ok) {
+    throw new Error("Error on response");
+  }
+  return await response.json();
+}
+
+function displayPageData(pageData) {
+  const cardContainer = document.querySelector(".card__container");
+  pageData.forEach((page) => {
+    const div = document.createElement("div");
+    div.classList.add("card");
+    div.innerHTML = ` <div class="card-titleAndImg">
+    <img
+      src="${page.image}"
+      alt="${page.name}"
+    />
+    <h2>${page.name}</h2>
+  </div>
+  <div class="card-trustScore">
+    <p>Trust Score</p>
+    <p>${page.trust_score}/10</p>
+  </div>
+  <div class="card-tradeVolume">
+    <p>Trade Volume 24h (BTC)</p>
+    <p>${page.trade_volume_24h_btc.toFixed(2)}</p>
+  </div>`;
+    cardContainer.appendChild(div);
+  });
+}
+
 function init() {
   switch (global.currentPage) {
     case "/":
@@ -269,10 +365,16 @@ function init() {
     case "/search.html":
       indexEventListeners();
       onSearchPage();
-      console.log("on search page");
+
       break;
     case "/coin-details.html":
+      indexEventListeners();
       onCoinDetailsPage();
+      break;
+    case "/exchanges.html":
+      indexEventListeners();
+      onExchangesPage();
+      break;
   }
 }
 

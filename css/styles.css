@@ -173,7 +173,12 @@ body {
   color: green !important;
 }
 .priceChange24,
-.coin-price-percent-change {
+.coin-price-percent-change,
+.card-info-percent-24,
+.historical-price-change-24,
+.historical-price-change-7,
+.historical-price-ath-percent-change,
+.historical-price-atl-percent-change {
   color: red;
 }
 /* search cards */
@@ -293,7 +298,40 @@ body {
   font-size: 0.8rem;
   opacity: 0.8;
 }
+/* card exchanges */
 
+/* pagination */
+.pagination__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 2rem;
+}
+.pagination button {
+  padding: 8px 16px;
+  background-color: var(--green-color);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.pagination button:hover {
+  background-color: var(--light-green);
+}
+.pagination__buttons {
+  margin-bottom: 0.5rem;
+}
+
+.pagination__container {
+  color: var(--text-color);
+  margin: 0 auto;
+  max-width: 1100px;
+  padding-top: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 3rem;
+}
+.pageNumber {
+  text-align: center;
+}
 @media (max-width: 900px) {
   .nav__mobile-menu {
     display: block;
