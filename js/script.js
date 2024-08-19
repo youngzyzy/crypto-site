@@ -654,6 +654,7 @@ async function onCategoriesDetailsPage() {
     try {
       const categoriesData = await getCategoriesData();
       const arrayNum = checkCorrectID(categoriesData, categoryToDisplay);
+      console.log(categoriesData);
       displayCategoryDetails(categoriesData, arrayNum);
     } catch (error) {
       console.log(error);
