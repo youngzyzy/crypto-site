@@ -375,6 +375,97 @@ body {
 .red {
   color: red;
 }
+
+/* exchange details */
+
+.exchange-details__container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 0rem 2rem;
+}
+
+.exchange-card {
+  background-color: var(--background-color);
+  box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.6),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  width: 400px;
+  gap: 0.2rem;
+}
+
+.exchange-card-description-p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.exchange-card-trust,
+.exchange-card-tradeVol {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+}
+
+.exchange-card-title-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+.exchange-card-title-section p {
+  font-size: 1rem;
+}
+
+.websiteButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+}
+.websiteButtons button {
+  padding: 6px 12px;
+  border-radius: 10px;
+  background-color: #212d3b;
+  color: white;
+  border: none;
+}
+.websiteButtons button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+.websitesAndCommunities {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+.exchange-card-description {
+  margin-top: 0.5rem;
+}
+.exchange-card-section-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
 @media (max-width: 900px) {
   .nav__mobile-menu {
     display: block;

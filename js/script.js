@@ -342,6 +342,8 @@ function displayPageData(pageData) {
   // document.querySelector(".pagination").innerHTML = ``;
 
   pageData.forEach((page) => {
+    const a = document.createElement("a");
+    a.setAttribute("href", `./exchange-details.html?id=${page.id}`);
     const div = document.createElement("div");
     div.classList.add("card");
     div.innerHTML = ` <div class="card-titleAndImg">
@@ -359,7 +361,9 @@ function displayPageData(pageData) {
     <p>Trade Volume 24h (BTC)</p>
     <p>${page.trade_volume_24h_btc.toFixed(2)}</p>
   </div>`;
-    cardContainer.appendChild(div);
+    a.appendChild(div);
+
+    cardContainer.appendChild(a);
 
     const trustScoreElement = div.querySelector(".card-trustScore-score");
     trustColorChange(trustScoreElement, page.trust_score);
@@ -523,6 +527,121 @@ function trustColorChange(elementToChange, trustScore) {
   }
 }
 
+async function onExchangeDetailsPage() {
+  const exchangeToDisplay = window.location.search.split("=")[1];
+
+  if (exchangeToDisplay !== "") {
+    try {
+      const exchangeData = await getExchangeData(exchangeToDisplay);
+
+      displayExchangeDetails(exchangeData);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  } else {
+    alert("No Exchange to Display");
+  }
+}
+function displayExchangeDetails(exchangeData) {
+  console.log(exchangeData);
+  const exchangeContainer = document.querySelector(
+    ".exchange-details__container"
+  );
+
+  exchangeContainer.innerHTML = `<div class="exchange-card">
+  <div class="exchange-card-title">
+    <img
+      src="${exchangeData.image}"
+      alt=""
+    />
+    <div class="exchange-card-title-section">
+      <h2>${exchangeData.name}</h2>
+      <p>#${exchangeData.trust_score_rank}</p>
+    </div>
+  </div>
+  <div class="exchange-card-section-top">
+    <div class="exchange-card-trust">
+      <p>Trust Score</p>
+      <p>${exchangeData.trust_score}/10</p>
+    </div>
+    <div class="exchange-card-tradeVol">
+      <p>Trade Volume 24hs (BTC)</p>
+      <p>${exchangeData.trade_volume_24h_btc}</p>
+    </div>
+    <div class="exchange-card-tradeVol">
+      <p>Trade Volume 24hs Normalized (BTC)</p>
+      <p>${exchangeData.trade_volume_24h_btc_normalized}</p>
+    </div>
+  </div>
+  <div class="exchange-card-description">
+    <p>Description</p>
+    <p class="exchange-card-description-p">
+   ${exchangeData.description === "" ? "N/A" : exchangeData.description}
+    </p>
+  </div>
+  <div class="websitesAndCommunities">
+    <div class="websiteHeaders">
+      <h2>Websites & Communities</h2>
+    </div>
+    <div class="websiteButtons">
+    </div>
+  </div>
+</div>`;
+
+  const websiteButtons = document.querySelector(".websiteButtons");
+  //if facebook url exists, add to dom
+  if (exchangeData.facebook_url !== "") {
+    const a = document.createElement("a");
+    a.setAttribute("href", exchangeData.facebook_url);
+    a.innerHTML = `<button class="website">Facebook</button>`;
+    websiteButtons.appendChild(a);
+  }
+  //if reddit url exists, add to dom
+  if (exchangeData.reddit_url !== "") {
+    const a = document.createElement("a");
+    a.setAttribute("href", exchangeData.reddit_url);
+    a.innerHTML = `<button class="website">Reddit</button>`;
+    websiteButtons.appendChild(a);
+  }
+  // if telelgram exists, add to dom
+  if (exchangeData.telegram_url !== "") {
+    const a = document.createElement("a");
+    a.setAttribute("href", exchangeData.telegram_url);
+    a.innerHTML = `<button class="website">Telegram</button>`;
+    websiteButtons.appendChild(a);
+  }
+  // if website exists, add to dom
+  if (exchangeData.url !== "") {
+    const a = document.createElement("a");
+    a.setAttribute("href", exchangeData.url);
+    a.innerHTML = `<button class="website">Exchange</button>`;
+    websiteButtons.appendChild(a);
+  }
+  // if URL 1 exists, add to dom
+  if (exchangeData.other_url_1 !== "") {
+    const a = document.createElement("a");
+    a.setAttribute("href", exchangeData.other_url_1);
+    a.innerHTML = `<button class="website">Other</button>`;
+    websiteButtons.appendChild(a);
+  }
+  // if URL 2 exists, add to dom
+  if (exchangeData.other_url_2 !== "") {
+    const a = document.createElement("a");
+    a.setAttribute("href", exchangeData.other_url_2);
+    a.innerHTML = `<button class="website">Other</button>`;
+    websiteButtons.appendChild(a);
+  }
+}
+async function getExchangeData(exchangeToDisplay) {
+  const apiURL = `https://api.coingecko.com/api/v3/exchanges/${exchangeToDisplay}`;
+  const response = await fetch(apiURL, options);
+  if (!response.ok) {
+    throw new Error("Error on response");
+  }
+  return await response.json();
+}
+
 function init() {
   switch (global.currentPage) {
     case "/":
@@ -546,6 +665,11 @@ function init() {
     case "/categories.html":
       indexEventListeners();
       onCategoriesPage();
+
+    case "/exchange-details.html":
+      indexEventListeners();
+      onExchangeDetailsPage();
+      break;
   }
 }
 
