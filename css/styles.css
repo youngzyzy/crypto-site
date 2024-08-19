@@ -178,7 +178,8 @@ body {
 .historical-price-change-24,
 .historical-price-change-7,
 .historical-price-ath-percent-change,
-.historical-price-atl-percent-change {
+.historical-price-atl-percent-change,
+.categoriesPercent24 {
   color: red;
 }
 /* search cards */
@@ -331,6 +332,48 @@ body {
 }
 .pageNumber {
   text-align: center;
+}
+
+/* categories cards */
+.categories-top-gainers-images img {
+  max-width: 35px;
+}
+.categories-top-gainers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.categories-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.categories-title {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.categories-section {
+  font-size: 1rem;
+}
+
+/* trust score  */
+
+.green {
+  color: green;
+}
+.yellow {
+  color: yellow;
+}
+.red {
+  color: red;
 }
 @media (max-width: 900px) {
   .nav__mobile-menu {

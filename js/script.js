@@ -4,6 +4,12 @@ const global = {
     page: 1,
     totalPages: 8,
   },
+  exchanges: {
+    page: 1,
+    totalPages: 8,
+    dataOutputted: 0,
+    amountToOutput: 25,
+  },
 };
 const options = {
   method: "GET",
@@ -347,13 +353,16 @@ function displayPageData(pageData) {
   </div>
   <div class="card-trustScore">
     <p>Trust Score</p>
-    <p>${page.trust_score}/10</p>
+    <p class="card-trustScore-score">${page.trust_score}/10</p>
   </div>
   <div class="card-tradeVolume">
     <p>Trade Volume 24h (BTC)</p>
     <p>${page.trade_volume_24h_btc.toFixed(2)}</p>
   </div>`;
     cardContainer.appendChild(div);
+
+    const trustScoreElement = div.querySelector(".card-trustScore-score");
+    trustColorChange(trustScoreElement, page.trust_score);
   });
 
   // const pageNumberDiv = document.querySelector(".pageNumber");
@@ -395,6 +404,125 @@ function displayPagination() {
     });
 }
 
+async function onCategoriesPage() {
+  try {
+    const categoriesData = await getCategoriesData();
+    displayCategoriesData(categoriesData);
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
+function displayCategoriesData(categoriesData) {
+  const cardContainer = document.querySelector(".card__container");
+  const paginationDiv = document.querySelector(".pagination");
+  cardContainer.innerHTML = "";
+  // console.log(categoriesData);
+  for (
+    let i = global.exchanges.dataOutputted;
+    i < global.exchanges.amountToOutput;
+    i++
+  ) {
+    const div = document.createElement("div");
+    div.classList.add("card");
+    div.innerHTML = `    <div class="categories-title">
+      <h2>${categoriesData[i].name}</h2>
+      <p class="categoriesPercent24">${categoriesData[
+        i
+      ].market_cap_change_24h.toFixed(2)}%</p>
+    </div>
+    <div class="categories-top-gainers">
+      <p class="categories-top-gainers-title">Top Gainers</p>
+      <div class="categories-top-gainers-images">
+        <img
+          src="${categoriesData[i].top_3_coins[0]}"
+          alt=""
+        />
+        <img
+          src="${categoriesData[i].top_3_coins[1]}"
+          alt=""
+        />
+        <img
+          src="${categoriesData[i].top_3_coins[2]}"
+          alt=""
+        />
+      </div>
+    </div>
+    <div class="categories-section">
+      <p>Market Cap</p>
+      <p>$${Math.round(categoriesData[i].market_cap).toLocaleString()}</p>
+    </div>
+    <div class="categories-section">
+      <p>24h Volume</p>
+      <p>$${Math.round(categoriesData[i].volume_24h).toLocaleString()}</p>
+    </div>`;
+    cardContainer.appendChild(div);
+
+    const categoriesPercent = div.querySelector(".categoriesPercent24");
+    colorChange(categoriesPercent, categoriesData[i].market_cap_change_24h);
+  }
+
+  const pageNumberDiv = document.querySelector(".pageNumber");
+  pageNumberDiv.innerHTML = `<p>Page ${global.exchanges.page} of ${global.exchanges.totalPages}</p>`;
+  displayCategoriesPagination();
+}
+function displayCategoriesPagination() {
+  const paginationDiv = document.querySelector(".pagination__buttons");
+  paginationDiv.innerHTML = `          <button class="pagination__buttons-prev">Prev</button>
+<button class="pagination__buttons-next">Next</button>`;
+
+  const pageNumberDiv = document.querySelector(".pageNumber");
+
+  pageNumberDiv.innerHTML = `<p>Page ${global.exchanges.page} of ${global.exchanges.totalPages}</p>`;
+
+  // Disable prev button if on first page
+  if (global.exchanges.page === 1) {
+    document.querySelector(".pagination__buttons-prev").disabled = true;
+  }
+  if (global.exchanges.page === global.exchanges.totalPages) {
+    document.querySelector(".pagination__buttons-next").disabled = true;
+  }
+  //next page
+  document
+    .querySelector(".pagination__buttons-next")
+    .addEventListener("click", async () => {
+      global.exchanges.page++;
+      global.exchanges.dataOutputted += 25;
+      global.exchanges.amountToOutput += 25;
+      const pageData = await getCategoriesData();
+      displayCategoriesData(pageData);
+    });
+  // Prev page
+  document
+    .querySelector(".pagination__buttons-prev")
+    .addEventListener("click", async () => {
+      global.exchanges.page--;
+      global.exchanges.dataOutputted -= 25;
+      global.exchanges.amountToOutput -= 25;
+      const pageData = await getCategoriesData();
+      displayCategoriesData(pageData);
+    });
+}
+
+async function getCategoriesData() {
+  const apiUrlSearch = `https://api.coingecko.com/api/v3/coins/categories?order=market_cap_desc`;
+  const response = await fetch(apiUrlSearch, options);
+  if (!response.ok) {
+    throw new Error("Error on response");
+  }
+  return await response.json();
+}
+
+function trustColorChange(elementToChange, trustScore) {
+  if (trustScore >= 8) {
+    elementToChange.classList.add("green");
+  } else if (trustScore >= 6) {
+    elementToChange.classList.add("yellow");
+  } else {
+    elementToChange.classList.add("red");
+  }
+}
+
 function init() {
   switch (global.currentPage) {
     case "/":
@@ -415,6 +543,9 @@ function init() {
       indexEventListeners();
       onExchangesPage();
       break;
+    case "/categories.html":
+      indexEventListeners();
+      onCategoriesPage();
   }
 }
 
