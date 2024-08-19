@@ -386,7 +386,7 @@ body {
   justify-content: center;
   flex-wrap: wrap;
   gap: 40px;
-  padding: 0rem 2rem;
+  padding: 0rem 2rem 3rem;
 }
 
 .exchange-card {
@@ -456,8 +456,10 @@ body {
   gap: 0.6rem;
   margin-top: 0.5rem;
 }
-.exchange-card-description {
+.exchange-card-description-p {
   margin-top: 0.5rem;
+  text-align: left;
+  text-indent: 20px;
 }
 .exchange-card-section-top {
   display: flex;
@@ -465,6 +467,66 @@ body {
   justify-content: center;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+/* categories details page */
+
+.categories-coin-details__container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 0rem 2rem 3rem;
+}
+
+.categories-coin-details {
+  background-color: var(--background-color);
+  box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.6),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  width: 400px;
+  gap: 0.4rem;
+}
+.categories-coin-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.categories-coin-coins {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.categories-coins-img img {
+  width: 35px;
+}
+.categories-coin-title {
+  margin-bottom: 0.1rem;
+}
+.categories-coin-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.categories-coin-section.one {
+  margin-bottom: 0.5rem;
+}
+.categories-coin-title {
+  margin-bottom: 0.6rem;
 }
 @media (max-width: 900px) {
   .nav__mobile-menu {

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coin Monster</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Mukta:wght@200;300;400;500;600;700;800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="./images/newFavicon.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <!-- start navbar -->
+    <nav class="nav coin-details">
+      <div class="nav__container">
+        <!-- mobile-menu -->
+        <div class="nav__mobile-menu">
+          <div class="nav__mobile-menu-left">
+            <a href="./index.html"
+              ><img src="./images/logo.png" alt="" class="nav__left-logo"
+            /></a>
+            <div class="nav__mobile-menu-toggle">
+              <i class="fas fa-bars fa-2x"></i>
+            </div>
+          </div>
+          <!-- mobile menu items -->
+          <div class="nav__mobile-menu-items">
+            <ul class="nav__mobile-menu-list">
+              <a href="./index.html"> <li>Trending</li></a>
+              <a href="./exchanges.html"><li>Exchanges</li></a>
+              <a href="./categories.html"> <li>Categories</li></a>
+            </ul>
+          </div>
+        </div>
+        <div class="nav__left">
+          <a href="./index.html"
+            ><img src="./images/logo.png" alt="" class="nav__left-logo"
+          /></a>
+          <a href="./index.html"><h2 class="nav__left-h2">Trending</h2></a>
+          <a href="./exchanges.html"><h2 class="nav__left-h2">Exchanges</h2></a>
+          <a href="./categories.html"
+            ><h2 class="nav__left-h2">Categories</h2></a
+          >
+        </div>
+        <div class="nav__right">
+          <form action="./search.html">
+            <input
+              type="text"
+              name="coinToSearch"
+              placeholder="Search a coin"
+            />
+            <button type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <!-- end navbar -->
+
+    <div class="categories-coin-details__container">
+      <!-- <div class="categories-coin-details">
+        <div class="categories-coin-title">
+          <h2>Proof of Work (POW)</h2>
+          <p>0.44%</p>
+        </div>
+
+        <div class="categories-coin-section one">
+          <p>Market Cap</p>
+          <p>$1232313131232</p>
+        </div>
+        <div class="categories-coin-section">
+          <p>24h Volume</p>
+          <p>$1232313131232</p>
+        </div>
+        <div class="categories-coin-coins">
+          <div class="categories-coins-header">
+            <p>Top 3 Coins</p>
+          </div>
+          <div class="categories-coins-img">
+            <img
+              src="https://coin-images.coingecko.com/coins/images/279/small/ethereum.png?1696501628"
+              alt=""
+            />
+            <img
+              src="https://coin-images.coingecko.com/coins/images/825/small/bnb-icon2_2x.png?1696501970"
+              alt=""
+            />
+            <img
+              src="https://coin-images.coingecko.com/coins/images/4128/small/solana.png?1718769756"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <div class="categories-coin-content">
+          <p>Description</p>
+          <p>
+            The GMCI Layer 1 Index (GML1) is an index tracking the performance
+            of the top Layer 1 protocols based on their circulating market
+            capitalization by GMCI
+          </p>
+        </div>
+      </div> -->
+    </div>
+
+    <script src="./js/script.js"></script>
+  </body>
+</html>

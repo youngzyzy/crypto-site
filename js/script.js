@@ -427,6 +427,11 @@ function displayCategoriesData(categoriesData) {
     i < global.exchanges.amountToOutput;
     i++
   ) {
+    const a = document.createElement("a");
+    a.setAttribute(
+      "href",
+      `./categories-details.html?id=${categoriesData[i].id}`
+    );
     const div = document.createElement("div");
     div.classList.add("card");
     div.innerHTML = `    <div class="categories-title">
@@ -460,7 +465,8 @@ function displayCategoriesData(categoriesData) {
       <p>24h Volume</p>
       <p>$${Math.round(categoriesData[i].volume_24h).toLocaleString()}</p>
     </div>`;
-    cardContainer.appendChild(div);
+    a.append(div);
+    cardContainer.appendChild(a);
 
     const categoriesPercent = div.querySelector(".categoriesPercent24");
     colorChange(categoriesPercent, categoriesData[i].market_cap_change_24h);
@@ -641,6 +647,83 @@ async function getExchangeData(exchangeToDisplay) {
   }
   return await response.json();
 }
+async function onCategoriesDetailsPage() {
+  const categoryToDisplay = window.location.search.split("=")[1];
+  console.log(categoryToDisplay);
+  if (categoryToDisplay !== "") {
+    try {
+      const categoriesData = await getCategoriesData();
+      const arrayNum = checkCorrectID(categoriesData, categoryToDisplay);
+      displayCategoryDetails(categoriesData, arrayNum);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  } else {
+    alert("No Exchange to Display");
+  }
+}
+function displayCategoryDetails(categoriesData, arrayNum) {
+  console.log(categoriesData[arrayNum]);
+  const categoryDetailsContainer = document.querySelector(
+    ".categories-coin-details__container"
+  );
+  const div = document.createElement("div");
+  div.classList.add("categories-coin-details");
+  div.innerHTML = ` <div class="categories-coin-title">
+  <h2>${categoriesData[arrayNum].name}</h2>
+  <p class="categories-coin-title-percent">${categoriesData[
+    arrayNum
+  ].market_cap_change_24h.toFixed(2)}%</p>
+</div>
+
+<div class="categories-coin-section one">
+  <p>Market Cap</p>
+  <p>$${Math.round(categoriesData[arrayNum].market_cap).toLocaleString()}</p>
+</div>
+<div class="categories-coin-section">
+  <p>24h Volume</p>
+  <p>$${Math.round(categoriesData[arrayNum].volume_24h).toLocaleString()}</p>
+</div>
+<div class="categories-coin-coins">
+  <div class="categories-coins-header">
+    <p>Top 3 Coins</p>
+  </div>
+  <div class="categories-coins-img">
+    <img
+      src="${categoriesData[arrayNum].top_3_coins[0]}"
+      alt=""
+    />
+    <img
+      src="${categoriesData[arrayNum].top_3_coins[1]}"
+      alt=""
+    />
+    <img
+      src="${categoriesData[arrayNum].top_3_coins[2]}"
+      alt=""
+    />
+  </div>
+</div>
+
+<div class="categories-coin-content">
+  <p>Description</p>
+  <p>
+    ${categoriesData[arrayNum].content}
+  </p>
+</div>`;
+  const percentElement = div.querySelector(".categories-coin-title-percent");
+  colorChange(percentElement, categoriesData[arrayNum].market_cap_change_24h);
+  categoryDetailsContainer.appendChild(div);
+}
+
+function checkCorrectID(categoriesData, categoryToDisplay) {
+  for (let i = 0; i < 200; i++) {
+    if (categoriesData[i].id === categoryToDisplay) {
+      return i;
+    }
+  }
+  throw new Error("couldnt find the id!");
+}
 
 function init() {
   switch (global.currentPage) {
@@ -669,6 +752,10 @@ function init() {
     case "/exchange-details.html":
       indexEventListeners();
       onExchangeDetailsPage();
+      break;
+    case "/categories-details.html":
+      indexEventListeners();
+      onCategoriesDetailsPage();
       break;
   }
 }
