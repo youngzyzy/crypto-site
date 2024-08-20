@@ -80,7 +80,10 @@ body {
 .nav__right button:hover {
   background-color: var(--light-green);
 }
-
+.nav__mobile-menu-list a {
+  text-decoration: none;
+  color: inherit;
+}
 /* mobile menu */
 .nav__mobile-menu {
   display: none;
