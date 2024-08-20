@@ -1,0 +1,1 @@
+This is a crypto currency website built using HTML, CSS, JS, Fetch API, and the Coin Gecko API. This website allows you to see trending coins, sorted exchanges, sorted categories, and to search for coins.  You can also get specific details of each by clicking on the cards. The website is responsive for web and mobile devices
