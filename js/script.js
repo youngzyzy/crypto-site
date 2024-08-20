@@ -75,9 +75,11 @@ function displayTrendingData(trendingData) {
 }
 function colorChange(elementToChange, changePercentage) {
   if (changePercentage > 0) {
-    elementToChange.classList.add("gain");
+    elementToChange.classList.add("green");
+  } else if (changePercentage === 0) {
+    elementToChange.classList.add("white");
   } else {
-    elementToChange.classList.remove("gain");
+    elementToChange.classList.add("red");
   }
 }
 async function getTrendingData() {

@@ -146,7 +146,19 @@ body {
 .heading {
   padding-top: 4rem;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
 }
+.heading h2 {
+  font-size: 2rem;
+}
+.heading p {
+  opacity: 0.8;
+}
+
 /* trending card section */
 .card__container {
   max-width: 1300px;
@@ -185,7 +197,7 @@ body {
 .historical-price-ath-percent-change,
 .historical-price-atl-percent-change,
 .categoriesPercent24 {
-  color: red;
+  color: white;
 }
 /* search cards */
 .card__container a {
@@ -261,6 +273,10 @@ body {
 .card-info-main-container {
   margin-bottom: 1rem;
 }
+.coin-details-cards-container {
+  padding-bottom: 4rem;
+}
+
 /* historical price card */
 .historical-price__container {
   padding: 1rem 2rem;
@@ -380,6 +396,9 @@ body {
 }
 .red {
   color: red;
+}
+.color {
+  color: white;
 }
 
 /* exchange details */
