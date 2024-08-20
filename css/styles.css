@@ -12,6 +12,10 @@
   --light-green: #5be583;
   --dark-color: #272d35;
 }
+html,
+body {
+  overflow-x: hidden;
+}
 body {
   background-color: var(--background-color);
   color: var(--text-color);
