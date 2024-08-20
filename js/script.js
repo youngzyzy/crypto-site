@@ -316,6 +316,7 @@ function formatReadableDate(isoDate) {
 async function onExchangesPage() {
   try {
     const pageData = await getPageData(global.search.page);
+    console.log(pageData);
     displayPageData(pageData);
   } catch (error) {
     console.log(error);
