@@ -144,13 +144,13 @@ body {
 }
 /* heading */
 .heading {
-  padding-top: 4rem;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   gap: 2rem;
+  padding: 4rem 2rem 0rem;
 }
 .heading h2 {
   font-size: 2rem;
