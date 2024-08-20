@@ -16,6 +16,7 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   font-family: "Montserrat";
+  overflow-x: hidden;
 }
 .nav__container {
   color: var(--text-color);
@@ -244,6 +245,7 @@ body {
   box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.6);
   max-width: 400px;
   margin: 0 auto;
+  border-radius: 10px;
 }
 .card-info-section-container {
   display: flex;
@@ -258,7 +260,7 @@ body {
 /* historical price card */
 .historical-price__container {
   padding: 1rem 2rem;
-
+  border-radius: 10px;
   box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.6);
   max-width: 400px;
   margin: 0 auto;
@@ -534,5 +536,23 @@ body {
   }
   .nav__left {
     display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  form button {
+    display: none;
+  }
+  .nav__mobile-menu-left img {
+    width: 80px;
+  }
+  .card-info__container {
+    max-width: 320px;
+  }
+  .historical-price__container {
+    max-width: 320px;
+  }
+  .categories-coin-details__container {
+    padding-bottom: 0rem 2rem 0rem !important;
   }
 }

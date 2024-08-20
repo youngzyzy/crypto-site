@@ -749,7 +749,7 @@ function init() {
     case "/categories.html":
       indexEventListeners();
       onCategoriesPage();
-
+      break;
     case "/exchange-details.html":
       indexEventListeners();
       onExchangeDetailsPage();
