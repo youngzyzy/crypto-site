@@ -432,10 +432,22 @@ body {
   width: 400px;
   gap: 0.2rem;
 }
+.exchange-card-description {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.exchange-card-description > :first-child {
+  font-size: 1.2rem;
+}
 
 .exchange-card-description-p {
   font-size: 0.9rem;
   opacity: 0.8;
+  text-align: center;
 }
 
 .exchange-card-trust,
@@ -486,8 +498,6 @@ body {
 }
 .exchange-card-description-p {
   margin-top: 0.5rem;
-  text-align: left;
-  text-indent: 20px;
 }
 .exchange-card-section-top {
   display: flex;

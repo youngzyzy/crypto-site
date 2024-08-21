@@ -572,15 +572,15 @@ function displayExchangeDetails(exchangeData) {
   <div class="exchange-card-section-top">
     <div class="exchange-card-trust">
       <p>Trust Score</p>
-      <p>${exchangeData.trust_score}/10</p>
+      <p class="exchange-card-trustScore" >${exchangeData.trust_score}/10</p>
     </div>
     <div class="exchange-card-tradeVol">
       <p>Trade Volume 24hs (BTC)</p>
-      <p>${exchangeData.trade_volume_24h_btc}</p>
+      <p>${exchangeData.trade_volume_24h_btc.toFixed(2)}</p>
     </div>
     <div class="exchange-card-tradeVol">
       <p>Trade Volume 24hs Normalized (BTC)</p>
-      <p>${exchangeData.trade_volume_24h_btc_normalized}</p>
+      <p>${exchangeData.trade_volume_24h_btc_normalized.toFixed(2)}</p>
     </div>
   </div>
   <div class="exchange-card-description">
@@ -597,6 +597,11 @@ function displayExchangeDetails(exchangeData) {
     </div>
   </div>
 </div>`;
+
+  const percentElement = exchangeContainer.querySelector(
+    ".exchange-card-trustScore"
+  );
+  trustColorChange(percentElement, exchangeData.trust_score);
 
   const websiteButtons = document.querySelector(".websiteButtons");
   //if facebook url exists, add to dom
